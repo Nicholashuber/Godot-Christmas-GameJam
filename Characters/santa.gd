@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 const speed = 30
+const TILE_SIZE = 16
 var current_state = SIDE_LEFT
 
 var dir = Vector2.RIGHT
@@ -11,6 +12,8 @@ var is_chatting = false
 
 var player
 var player_in_chat_zone = false
+
+
 
 
 enum {
@@ -44,6 +47,7 @@ func _process(_delta):
 			MOVE:
 				move(_delta)
 	if Input.is_action_just_pressed("chat"):
+		#if Input.is_action_just_pressed("chat") and not is_chatting:
 		print("chatting with santa")
 		$Dialogue.start()
 		is_roaming = false
@@ -56,7 +60,15 @@ func choose(array):
 	
 func move(delta):
 	if !is_chatting:
-		position += dir * speed * delta
+		#position += dir * speed * delta
+		var new_position = position + dir * speed * delta
+
+		# Ensure the character doesn't move more than 1 tile from the start position
+		new_position.x = clamp(new_position.x, start_pos.x - TILE_SIZE, start_pos.x + TILE_SIZE)
+		new_position.y = clamp(new_position.y, start_pos.y - TILE_SIZE, start_pos.y + TILE_SIZE)
+
+		position = new_position
+
 		
 		
 

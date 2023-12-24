@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c3av1mdutauao"]
+[gd_scene load_steps=20 format=3 uid="uid://c3av1mdutauao"]
 
 [ext_resource type="Script" path="res://Characters/santa.gd" id="1_cxwsw"]
 [ext_resource type="Texture2D" uid="uid://cov3oltve5t5o" path="res://art/fantasychristmas/Character_Santa_Claus.png" id="1_rmvro"]
@@ -124,7 +124,9 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7lqle"]
-radius = 32.0156
+radius = 9.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_38wa6"]
 
 [node name="Santa" type="CharacterBody2D"]
 script = ExtResource("1_cxwsw")
@@ -136,11 +138,11 @@ animation = &"walk_s"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)
 shape = SubResource("CircleShape2D_7lqle")
-disabled = true
 
 [node name="chat_detection_area" type="Area2D" parent="CollisionShape2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionShape2D/chat_detection_area"]
+shape = SubResource("CircleShape2D_38wa6")
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true

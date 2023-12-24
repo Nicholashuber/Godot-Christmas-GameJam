@@ -25,18 +25,26 @@ func load_dialogue():
 	return content
 	
 func _input(event):
-	if !d_active:
-		return
-	if event.is_action_pressed("ui_accept"):
-		next_script()
+	#if !d_active:
+	#	return
+	#if event.is_action_pressed("ui_accept"):
+	if event.is_action_pressed("continue_dialogue") and d_active:
+			next_script()
 
 func next_script():
 	current_dialogue_id += 1
+	print("dialogue???? ", current_dialogue_id)
 	if current_dialogue_id >= len(dialogue):
-		d_active = false
-		$NinePatchRect.visible = false
-		emit_signal("dialogue_finished")
+		finish_dialogue()
 		return
 		
+	var current_entry = dialogue[current_dialogue_id]
 	$NinePatchRect/Name.text = dialogue[current_dialogue_id]['name']
 	$NinePatchRect/Text.text = dialogue[current_dialogue_id]['text']
+	
+	
+func finish_dialogue():
+	d_active = false
+	$NinePatchRect.visible = false
+	emit_signal("dialogue_finished")
+	print("Dialogue finished at index: ", current_dialogue_id)
