@@ -1,0 +1,153 @@
+[gd_scene load_steps=19 format=3 uid="uid://c3av1mdutauao"]
+
+[ext_resource type="Script" path="res://Characters/santa.gd" id="1_cxwsw"]
+[ext_resource type="Texture2D" uid="uid://cov3oltve5t5o" path="res://art/fantasychristmas/Character_Santa_Claus.png" id="1_rmvro"]
+[ext_resource type="PackedScene" uid="uid://cme6nkt5lgoa2" path="res://Dialogue/dialogue.tscn" id="3_5odpw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5nm3e"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dfeu2"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(0, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uv8lk"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(24, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xa0o5"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(48, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_md0tx"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(24, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iq1un"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(0, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjw7e"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(48, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80fce"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_48lnp"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_58322"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rslip"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7vri"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxfjh"]
+atlas = ExtResource("1_rmvro")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0gs14"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5nm3e")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dfeu2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uv8lk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xa0o5")
+}],
+"loop": true,
+"name": &"walk_e",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_md0tx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iq1un")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rjw7e")
+}],
+"loop": true,
+"name": &"walk_n",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_80fce")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_48lnp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_58322")
+}],
+"loop": true,
+"name": &"walk_s",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rslip")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q7vri")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mxfjh")
+}],
+"loop": true,
+"name": &"walk_w",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7lqle"]
+radius = 32.0156
+
+[node name="Santa" type="CharacterBody2D"]
+script = ExtResource("1_cxwsw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_0gs14")
+animation = &"walk_s"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+shape = SubResource("CircleShape2D_7lqle")
+disabled = true
+
+[node name="chat_detection_area" type="Area2D" parent="CollisionShape2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionShape2D/chat_detection_area"]
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="Dialogue" parent="." instance=ExtResource("3_5odpw")]
+
+[connection signal="body_entered" from="CollisionShape2D/chat_detection_area" to="." method="_on_chat_detection_area_body_entered"]
+[connection signal="body_exited" from="CollisionShape2D/chat_detection_area" to="." method="_on_chat_detection_area_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="dialogue_finished" from="Dialogue" to="." method="_on_dialogue_dialogue_finished"]
